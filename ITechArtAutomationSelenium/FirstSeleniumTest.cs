@@ -4,19 +4,29 @@ using OpenQA.Selenium.Chrome;
 
 namespace ITechArtAutomationSelenium
 {
+    [TestFixture]
     public class FirstSeleniumTest
     {
+        private IWebDriver webDriver { get; set; }
+        private readonly string _baseUrl = Configurator.BaseUrl;
+
+        [SetUp]
+        public void SetUp()
+        {
+            var pathToChromeDriver = Path.Combine(AppContext.BaseDirectory, "Resources", "chromedriver.exe");
+            webDriver = new ChromeDriver(pathToChromeDriver);
+        }
         [Test]
         public void FirstTest()
         {
-            var pathToChromeDriver = Path.Combine(AppContext.BaseDirectory, "Resources", "chromedriver.exe");
-            IWebDriver webDriver = new ChromeDriver(pathToChromeDriver);
-            var BaseUrl = "https://www.demoblaze.com/index.html";
-            var baseUrlobj = new Uri(BaseUrl, UriKind.Absolute);
+            var baseUrlobj = new Uri(_baseUrl, UriKind.Absolute);
             webDriver.Navigate().GoToUrl(baseUrlobj);
-            webDriver.Quit(); //close the browser
-            // webDriver.Close(); close the tab in browser
+        }
 
+        [TearDown]
+        public void TearDown()
+        {
+            webDriver.Quit();
         }
 
     }
